@@ -87,7 +87,9 @@ RUN echo 'package main\nimport "fmt"\nfunc main() { fmt.Println("Hello, Multi-St
 RUN go build -o myapp main.go
 
 # Stage 2: Create lightweight runtime image
-FROM alpine:latest
+FROM alpine:latest AS final
 WORKDIR /root/
 COPY --from=builder /app/myapp .
 CMD ["./myapp"]
+
+docker build -t myimage2 .
