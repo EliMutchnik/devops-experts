@@ -34,6 +34,7 @@ kubectl describe service hello-node
 kubectl scale deployment hello-node --replicas=2
 kubectl delete service hello-node
 kubectl expose deploy/hello-node --type NodePort --port 80
+kubectl port-forward svc/hello-node 8989:80
 
 # Deploying yaml
 ----------
