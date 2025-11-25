@@ -81,6 +81,8 @@ spec:
       - "3600"
 -------
 
+kubectl exec -it <POD ID> -- bash
+
 # Understanding yamls
 https://github.com/avielb/k8s-demo/blob/master/guestbook/100-rows.yaml
 
