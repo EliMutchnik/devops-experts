@@ -27,16 +27,14 @@ kubectl set image deploy/hello-node nginx=nginx:latest
 kubectl describe deployment hello-node
 kubectl get deployment hello-node -o yaml
 
+# Networking
 kubectl expose deploy/hello-node --type ClusterIP --port 80
 kubectl describe service hello-node
 kubectl scale deployment hello-node --replicas=2
 kubectl delete service hello-node
-kubectl delete deployment hello-node
 kubectl expose deploy/hello-node --type NodePort --port 80
-https://kubernetes.io/docs/reference/kubectl/generated/kubectl_completion/
-kubectl expose deploy/hello-node --type LoadBalancer --port 80
-kubectl delete pod nginx
-kubectl apply -f https://raw.githubusercontent.com/avielb/k8s-demo/refs/heads/master/pod-with-service.yaml
+
+# Deploying yaml
 ----------
 apiVersion: v1
 kind: Service
@@ -47,10 +45,10 @@ spec:
     name: nginx
   type: NodePort
   ports:
-  - name: foo # Actually, no port is needed.
+  - name: foo
     port: 80
     targetPort: 80
-  - name: bar # Actually, no port is needed.
+  - name: bar
     port: 8081
     targetPort: 8081
 ---
@@ -81,8 +79,8 @@ spec:
       - "3600"
 -------
 
-
-https://github.com/avielb/k8s-demo/tree/master/guestbook
+# Understanding yamls
+https://github.com/avielb/k8s-demo/blob/master/guestbook/100-rows.yaml
 
 
 kubectl apply -f https://raw.githubusercontent.com/avielb/k8s-demo/refs/heads/master/guestbook/cronjob.yaml
