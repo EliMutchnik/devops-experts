@@ -9,6 +9,7 @@ kubectl describe node docker-desktop
 # Creating NS
 kubectl create ns devops1125
 kubectl ns devops1125
+kubectl config view --minify | grep namespace:
 
 # Running first Pod
 kubectl run nginx --image=nginx:1.29-alpine
