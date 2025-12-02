@@ -41,10 +41,12 @@ kubectl apply -f https://raw.githubusercontent.com/avielb/k8s-demo/refs/heads/ma
 
 # StatefullSets
 kubectl apply -f https://raw.githubusercontent.com/avielb/k8s-demo/refs/heads/master/volumes/statefulset.yaml
+kubectl scale sts/postgres --replicas=5
 
 # DaemonSets
 kubectl apply -f https://raw.githubusercontent.com/avielb/k8s-demo/refs/heads/master/volumes/daemonset.yaml
 
 # CronJob
 kubectl apply -f https://raw.githubusercontent.com/avielb/k8s-demo/refs/heads/master/volumes/cronjob.yaml
-kubectl scale sts/postgres --replicas=5
+
+# Extras: PodDisruptionBudget, PriorityClass, ResourceQuota
