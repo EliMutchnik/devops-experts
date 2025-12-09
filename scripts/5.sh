@@ -41,3 +41,9 @@ https://artifacthub.io/
 helm upgrade -i redis oci://registry-1.docker.io/bitnamicharts/redis
 
 helm uninstall myrelease redis
+
+# Class exercise
+## Create a new chart, with 5 replicas of nginx:alpine image. 
+## Deploy it, package it and push to your Dockerhub.
+## Uninstall local chart installation and install it from the Dockerhub repo.
+
