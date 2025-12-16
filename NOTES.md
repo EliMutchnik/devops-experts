@@ -1,0 +1,1 @@
+- Git tracks snapshots, not files
