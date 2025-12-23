@@ -1,4 +1,7 @@
 # Make sure you are able to push to your repo
+mkdir .github
+cd .github
+mkdir workflows
 
 # Warming up
 https://github.com/avielb/advanced-devops/blob/master/.github/workflows/01-example.yaml
