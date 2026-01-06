@@ -9,7 +9,7 @@ data:
     <html>
     <head><title>GitOps Demo</title></head>
     <body style="background-color: #2d3436; color: white; text-align: center; padding-top: 50px;">
-      <h1>Hello Class 1125!</h1>
+      <h1>Have a good night :)!</h1>
       <p>Deployed via ArgoCD</p>
     </body>
     </html>
@@ -33,7 +33,7 @@ metadata:
   name: my-website-deployment
   namespace: student-apps
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: my-website
