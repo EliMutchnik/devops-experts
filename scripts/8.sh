@@ -69,3 +69,39 @@ spec:
       selfHeal: true
     syncOptions:
     - CreateNamespace=true
+
+
+# Class Exercise
+1. Write a Kubernetes application (yaml file/s) that displays a custom HTML page
+2. Deploy it using ArgoCD using the UI / yaml (better)
+3. Update website only using Git.
+
+# Someting to start with:
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-website-config
+  namespace: student-apps
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head><title>GitOps Demo</title></head>
+    <body style="background-color: #2d3436; color: white; text-align: center; padding-top: 50px;">
+      <h1>Hello Class 1125!</h1>
+      <p>Deployed via ArgoCD</p>
+    </body>
+    </html>
+---
+apiVersion: v1
+kind: Service
+.
+.
+.
+---
+apiVersion: apps/v1
+kind: Deployment
+.
+.
+.
