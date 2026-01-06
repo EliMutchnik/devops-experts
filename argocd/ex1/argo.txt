@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: student-gitops-demo
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/EliMutchnik/devops-experts.git
+    targetRevision: HEAD
+    path: ./argocd/ex1
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: student-apps
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
