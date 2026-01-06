@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: my-website-config
+  namespace: student-apps
 data:
   index.html: |
     <!DOCTYPE html>
@@ -17,6 +18,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: my-website-service
+  namespace: student-apps
 spec:
   type: LoadBalancer  # Use NodePort if on bare metal/kind without LB
   selector:
@@ -29,6 +31,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: my-website-deployment
+  namespace: student-apps
 spec:
   replicas: 1
   selector:
