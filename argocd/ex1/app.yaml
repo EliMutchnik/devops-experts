@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-website-config
+  namespace: student-apps
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head><title>GitOps Demo</title></head>
+    <body style="background-color: #2d3436; color: white; text-align: center; padding-top: 50px;">
+      <h1>Hello Class!</h1>
+      <p>Deployed via ArgoCD</p>
+    </body>
+    </html>
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-website-service
+  namespace: student-apps
+spec:
+  type: LoadBalancer  # Use NodePort if on bare metal/kind without LB
+  selector:
+    app: my-website
+  ports:
+    - port: 80
+      targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-website-deployment
+  namespace: student-apps
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-website
+  template:
+    metadata:
+      labels:
+        app: my-website
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: html-volume
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: html-volume
+        configMap:
+          name: my-website-config
