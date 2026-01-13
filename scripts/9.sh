@@ -8,6 +8,7 @@ kubectl create namespace monitoring
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add kube-state-metrics https://kubernetes.github.io/kube-state-metrics
 helm upgrade -i prometheus prometheus-community/prometheus --namespace monitoring -f prometheus/values.yml
+kubectl patch ds prometheus-prometheus-node-exporter --type "json" -p '[{"op": "remove", "path" : "/spec/template/spec/containers/0/volumeMounts/2/mountPropagation"}]' -n monitoring
 
 # Install Grafana
 kubectl apply -f monitoring/grafana/config.yml
