@@ -44,7 +44,7 @@ kubectl -n monitoring port-forward svc/grafana 3000:80
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm upgrade -i my-nginx ingress-nginx/ingress-nginx \
   --set controller.metrics.enabled=true \
-  --set-string controller.podAnnotations.prometheus\.io/scrape="true" \
-  --set-string controller.podAnnotations.prometheus\.io/port="10254"
+  --set-string controller."podAnnotations.prometheus\.io/scrape"="true" \
+  --set-string controller."podAnnotations.prometheus\.io/port"="10254"
 
 # nginx Ingress grafana dashboard id: 16677
