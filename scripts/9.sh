@@ -1,5 +1,5 @@
 git clone https://github.com/avielb/advanced-devops.git
-cd monitoring/k8s-setup
+cd advanced-devops/monitoring/k8s-setup
 
 # Create monitoring namespace
 kubectl create namespace monitoring
