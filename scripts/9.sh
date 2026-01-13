@@ -19,10 +19,15 @@ kubectl -n monitoring port-forward svc/prometheus-prometheus-node-exporter 9100:
 
 ### Prometheus Server
 kubectl -n monitoring port-forward svc/prometheus-server 9090:80
+# PromQL examples:
+1. 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)
+2. (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100
+3. node_filesystem_avail_bytes / node_filesystem_size_bytes * 100
+4. sum by (device) (rate(node_network_receive_bytes_total[5m]) + rate(node_network_transmit_bytes_total[5m]))
 
 ### Push Gateway
 kubectl -n monitoring port-forward svc/prometheus-prometheus-pushgateway 9091:9091
-echo "some_metric 52" | curl --data-binary @- http://localhost:9091/metrics/job/some_job/a/b
+echo "some_metric 1125" | curl --data-binary @- http://localhost:9091/metrics/job/some_job/a/b
 
 ### Alert Manager
 kubectl -n monitoring port-forward svc/prometheus-alertmanager 9093:9093
