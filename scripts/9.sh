@@ -14,7 +14,6 @@ kubectl apply -f monitoring/grafana/config.yml
 helm repo add grafana https://grafana.github.io/helm-charts
 helm install grafana --namespace monitoring grafana/grafana --set rbac.pspEnabled=false
 
-
 ### Node Exporter
 kubectl -n monitoring port-forward svc/prometheus-prometheus-node-exporter 9100:9100
 
@@ -31,4 +30,14 @@ kubectl -n monitoring port-forward svc/prometheus-alertmanager 9093:9093
 ### Grafana
 kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 kubectl -n monitoring port-forward svc/grafana 3000:80
+# Setup http://prometheus-server as data source
 
+# kube-state-metrics grafana-dashboard id: 6417
+
+# Deploy nginx Ingress
+helm install my-nginx ingress-nginx/ingress-nginx \
+  --set controller.metrics.enabled=true \
+  --set-string controller.podAnnotations.prometheus\.io/scrape="true" \
+  --set-string controller.podAnnotations.prometheus\.io/port="10254"
+
+# nginx Ingress grafana dashboard id: 16677
