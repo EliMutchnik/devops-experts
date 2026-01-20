@@ -1,4 +1,5 @@
 # Creating EC2 instance - https://us-east-1.console.aws.amazon.com/ec2/
+https://instances.vantage.sh
 
 # Installing Docker
 sudo -i
