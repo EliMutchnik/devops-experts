@@ -90,12 +90,16 @@ provider "aws" {
   secret_key = "XXXXX"
 }
 
+locals {
+  instance_name = "ExampleInstance"
+}
+
 resource "aws_instance" "my_first_instance" {
   ami           = "ami-07ff62358b87c7116" # Amazon Linux 2 AMI
   instance_type = "t3.micro"
 
   tags = {
-    Name = "ExampleInstance"
+    Name = local.instance_name
   }
 }
 
