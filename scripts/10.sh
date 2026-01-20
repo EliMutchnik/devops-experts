@@ -105,5 +105,5 @@ resource "aws_instance" "my_first_instance" {
 }
 
 output "ip" {
-  value = aws_instance.example.public_ip
+  value = aws_instance.my_first_instance.public_ip
 }
