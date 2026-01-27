@@ -1,13 +1,7 @@
 terraform {
   required_version = ">= 1.10.0"
 
-  backend "s3" {
-    bucket         = "" # <--- YOUR BUCKET NAME HERE
-    key            = "state/2/terraform.tfstate"
-    region         = "us-east-1"
-    encrypt        = true
-    use_lockfile   = true
-  }
+  backend "local" {}
 
   required_providers {
     aws = {
@@ -48,13 +42,15 @@ data "aws_subnet" "primary" {
 
 
 # 1. COUNT: Used here as a condition (Only create if 'create_test_instance' is true)
+# 1. COUNT: Used here as a condition (Only create if 'create_test_instance' is true)
 resource "aws_instance" "test_server" {
   count         = var.create_test_instance ? 1 : 0
   ami           = "ami-07ff62358b87c7116"
   instance_type = "t3.micro"
 
-  subnet_id     = data.aws_subnet.primary.id
+  subnet_id                   = data.aws_subnet.primary.id
   associate_public_ip_address = true
+  vpc_security_group_ids      = [aws_security_group.allow_ping.id]
 
   tags = {
     Name = "Conditional-Instance"
@@ -62,13 +58,13 @@ resource "aws_instance" "test_server" {
 }
 
 resource "aws_security_group" "allow_ping" {
-  name        = "${var.project_name}-sg"
+  name        = "my-instance-sg"
   description = "Allow ICMP ping from anywhere"
   vpc_id      = data.aws_vpc.default.id
 
   ingress {
-    from_port   = 8  # ICMP type 8 (Echo Request)
-    to_port     = 0  # ICMP code
+    from_port   = 8 # ICMP type 8 (Echo Request)
+    to_port     = 0 # ICMP code
     protocol    = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -83,6 +79,7 @@ resource "aws_security_group" "allow_ping" {
 
 resource "null_resource" "ping_test" {
   triggers = {
+    always_run  = timestamp()
     instance_ip = aws_instance.test_server[0].public_ip
   }
 
@@ -91,7 +88,7 @@ resource "null_resource" "ping_test" {
     command = "ping -c 4 ${self.triggers.instance_ip}"
   }
 
-  depends_on = [aws_instance.test_server]
+  depends_on = [aws_instance.test_server, aws_security_group.allow_ping]
 }
 
 
