@@ -106,13 +106,7 @@ output "instance_public_ip" {
 terraform {
   required_version = ">= 1.10.0"
 
-  backend "s3" {
-    bucket         = "" # <--- YOUR BUCKET NAME HERE
-    key            = "state/3/terraform.tfstate"
-    region         = "us-east-1"
-    encrypt        = true
-    use_lockfile   = true
-  }
+  backend "local" {}
 
   required_providers {
     aws = {
