@@ -42,3 +42,8 @@ module "vpc" {
     Environment = "dev"
   }
 }
+
+
+### Class Ex
+# Create 2 S3 buckets in a loop that contains your name and a random suffix
+# Create an EC2 instance and a null resource that writes the public IP of the instance to a file
