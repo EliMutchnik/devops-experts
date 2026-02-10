@@ -55,6 +55,7 @@ aws ssm get-parameter --name "/dev/db/password" --with-decryption
 
 ### Setup AWS cli
 https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+https://docs.aws.amazon.com/cli/latest/
 export AWS_ACCESS_KEY_ID=XXXXXXX
 export AWS_SECRET_ACCESS_KEY=XXXXXXXX
 
