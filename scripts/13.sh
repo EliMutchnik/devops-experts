@@ -1,4 +1,4 @@
-### Cloudwatch alaemts, metrics and dashboards
+### Cloudwatch alarms, metrics and dashboards
 
 ### Cloudtrail event history VS trails
 
