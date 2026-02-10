@@ -8,12 +8,13 @@
 1. String
 
 aws ssm put-parameter \
+    --region us-east-1 \
     --name "/dev/app/web_port" \
     --value "8080" \
     --type "String" \
     --overwrite
 
-aws ssm get-parameter --name "/dev/app/web_port"
+aws ssm get-parameter --region us-east-1 --name "/dev/app/web_port"
 
 2. StringList
 
@@ -44,13 +45,14 @@ print(python_list)
 3. SecureString
 
 aws ssm put-parameter \
+    --region us-east-1 \
     --name "/dev/db/password" \
     --value "SuperSecret123!" \
     --type "SecureString" \
     --overwrite
 
-aws ssm get-parameter --name "/dev/db/password"
-aws ssm get-parameter --name "/dev/db/password" --with-decryption
+aws ssm get-parameter --region us-east-1 --name "/dev/db/password"
+aws ssm get-parameter --region us-east-1 --name "/dev/db/password" --with-decryption
 
 
 ### Setup AWS cli
