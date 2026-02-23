@@ -1,0 +1,10 @@
+--- 
+- name: install nginx and vim
+  apt: name=nginx,vim state=present
+
+- name: Copy aviel.txt 
+  copy: src=avial.txt dest=/var1/tmp
+
+
+- name: make sure this runs successfully
+  ansible.builtin.command: /bin/false

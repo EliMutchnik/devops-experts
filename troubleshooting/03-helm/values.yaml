@@ -1,0 +1,18 @@
+replicas: 2
+image:
+  repository: nginx
+  tag: "123.4"
+  pullPolicy: IfNotPresent
+
+service:
+  port: 80
+
+resources:
+  limits:
+    memory: "512"
+    cpu: "500m"
+
+hpa:
+  minReplicas: 5
+  maxReplicas: 2
+  targetCPU: 70
