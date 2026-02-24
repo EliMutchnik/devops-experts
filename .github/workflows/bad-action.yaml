@@ -1,0 +1,27 @@
+name: CI Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SSH_KEY: ${{ secrets.TOP_SECRET }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install -r troubleshooting/01-github-actions/requirements.txt
+
+      - name: finish
+        run: |
+          echo "Amazing!"
