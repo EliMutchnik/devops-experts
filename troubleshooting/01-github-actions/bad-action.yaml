@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main_branch
+      - main branch
 
 jobs:
   deploy:
@@ -21,7 +21,7 @@ jobs:
           python-version: '3.9'
 
       - name: Install dependencies
-        pip install -r troubleshooting/01-github-actions/requirements.txt
+        pip install -r requirements.txt
 
       - name: finish
         run: |
