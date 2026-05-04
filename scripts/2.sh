@@ -1,13 +1,14 @@
-docker run -d --name test nginx:alpine
+docker run --name test -p 8080:80 -d nginx:alpine
 docker exec -it test sh
 exit
+
 docker ps
 docker stop test
 docker start test
 docker rm -vf test
 
 =======
-
+# Create Python script
 vim 1.py
 
 from flask import Flask
@@ -23,6 +24,7 @@ if __name__ == '__main__':
   app.run(host='0.0.0.0')
 
 
+# Create Dockerfile
 vim Dockerfile
 
 FROM python:alpine
@@ -75,21 +77,28 @@ docker tag myimage1 elimutch/devops1125:v0.1
 docker push elimutch/devops1125:v0.1
 
 ==========
+### Without multi-stage build (Dockerfile.heavy)
 
-# Stage 1: Build
-FROM golang:1.20 AS builder
+FROM golang:1.21-alpine
 WORKDIR /app
+RUN echo -e 'package main\nimport "fmt"\nfunc main() { fmt.Println("Hello Class!") }' > main.go
+RUN go build -o myapp main.go
+CMD ["./myapp"]
 
-# Create main.go inline
-RUN echo 'package main\nimport "fmt"\nfunc main() { fmt.Println("Hello, Multi-Stage Docker!") }' > main.go
+docker build -t myimage-heavy .
 
-# Build the Go binary
+### With multi-stage build (Dockerfile.slim)
+
+# STAGE 1: Build
+FROM golang:1.21-alpine AS builder
+WORKDIR /app
+RUN echo -e 'package main\nimport "fmt"\nfunc main() { fmt.Println("Hello Class!") }' > main.go
 RUN go build -o myapp main.go
 
-# Stage 2: Create lightweight runtime image
-FROM alpine:latest AS final
+# STAGE 2: Final Image
+FROM alpine:latest
 WORKDIR /root/
 COPY --from=builder /app/myapp .
 CMD ["./myapp"]
 
-docker build -t myimage2 .
+docker build -t myimage-slim .
