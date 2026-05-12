@@ -7,8 +7,8 @@ kubectl get pods -n kube-system
 kubectl describe node docker-desktop
 
 # Creating NS
-kubectl create ns devops1125
-kubectl ns devops1125
+kubectl create ns class3
+kubectl config set-context --current --namespace=class3
 kubectl config view --minify | grep namespace:
 
 # Running first Pod
