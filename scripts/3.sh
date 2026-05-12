@@ -4,7 +4,7 @@ kubectl get namespaces
 kubectl get pods
 kubectl get pods --all-namespaces
 kubectl get pods -n kube-system
-kubectl describe node docker-desktop
+kubectl describe node <NODE_NAME>
 
 # Creating NS
 kubectl create ns class3
@@ -17,7 +17,7 @@ kubectl describe pod nginx
 kubectl delete pod nginx
 
 # Creating first deployment (watch kubectl get pods)
-kubectl create deployment hello-node --image=nginx:alpine --replicas=5
+kubectl create deployment hello-node --image=nginx:latest --replicas=5
 kubectl describe deployment hello-node
 kubectl describe replicasets hello-node-<ID>
 kubectl get deployment hello-node -o yaml
@@ -32,9 +32,13 @@ kubectl get deployment hello-node -o yaml
 kubectl expose deploy/hello-node --type ClusterIP --port 80
 kubectl describe service hello-node
 kubectl scale deployment hello-node --replicas=2
+kubectl exec -it <pod_name> -- bash
+curl http://<ip>:80
 kubectl delete service hello-node
 kubectl expose deploy/hello-node --type NodePort --port 80
-kubectl port-forward svc/hello-node 8989:80
+curl http://<node_ip>:<node_port>
+kubectl port-forward svc/hello-node 4444:80
+http://localhost:4444
 
 # Deploying yaml
 ----------
