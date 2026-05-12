@@ -65,9 +65,8 @@ metadata:
   labels:
     name: nginx
 spec:
-  #hostname: frontend001
   containers:
-  - image: nginx
+  - image: nginx:latest
     name: nginx-container
 ---
 apiVersion: v1
@@ -78,17 +77,17 @@ metadata:
     name: debian
 spec:
   containers:
-  - image: debian
+  - image: debian:latest
     name: debian-container
     command:
       - sleep
       - "3600"
 -------
-
+kubectl apply -f app.yaml
 kubectl exec -it <POD ID> -- bash
 
 # Understanding yamls
-https://github.com/avielb/k8s-demo/blob/master/guestbook/100-rows.yaml
+https://github.com/EliMutchnik/devops-experts/blob/main/k8s/examples.yaml
 
 
-kubectl apply -f https://raw.githubusercontent.com/avielb/k8s-demo/refs/heads/master/guestbook/cronjob.yaml
+kubectl apply -f https://raw.githubusercontent.com/EliMutchnik/devops-experts/refs/heads/main/k8s/crontab.yaml
