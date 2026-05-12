@@ -1,0 +1,120 @@
+# -------------------------------
+# Deployment Configuration
+# -------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+  labels:
+    app: my-app
+spec:
+  replicas: 3  # Number of pods to run
+  selector:
+    matchLabels:
+      app: my-app  # Must match template labels
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: my-app-container
+          image: nginx:latest  # Use latest Nginx image
+          ports:
+            - containerPort: 80  # Expose port 80 inside the container
+          resources:
+            limits:
+              memory: "128Mi"  # Max memory limit
+              cpu: "500m"  # Max CPU limit (500 millicores = 0.5 vCPU)
+            requests:
+              memory: "64Mi"  # Minimum memory required
+              cpu: "250m"  # Minimum CPU required
+          env:
+            - name: ENVIRONMENT  # Environment variable
+              value: "production"
+            - name: LOG_LEVEL
+              value: "info"
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config  # Mount ConfigMap to this path
+      volumes:
+        - name: config-volume
+          configMap:
+            name: my-config  # Reference ConfigMap
+
+---
+# -------------------------------
+# Service Configuration
+# -------------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-service
+spec:
+  selector:
+    app: my-app  # Select pods matching this label
+  ports:
+    - protocol: TCP
+      port: 80  # Service port
+      targetPort: 80  # Match container port
+  type: ClusterIP  # Internal access only (default)
+
+---
+# -------------------------------
+# ConfigMap Configuration
+# -------------------------------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-config
+data:
+  config.json: |
+    {
+      "key1": "value1",
+      "key2": "value2",
+      "featureToggle": true
+    }  # Sample JSON config stored in ConfigMap
+
+---
+# -------------------------------
+# Horizontal Pod Autoscaler (HPA)
+# -------------------------------
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: my-app-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: my-app  # Target the Deployment
+  minReplicas: 3  # Minimum number of pods
+  maxReplicas: 10  # Maximum number of pods
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 75  # Scale up if CPU usage > 75%
+
+---
+# -------------------------------
+# Ingress Configuration
+# -------------------------------
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-app-ingress
+spec:
+  rules:
+    - host: myapp.example.com  # Define domain name
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: my-app-service  # Route traffic to Service
+                port:
+                  number: 80  # Match Service port
