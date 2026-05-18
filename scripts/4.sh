@@ -13,31 +13,38 @@ kubectl apply -f https://raw.githubusercontent.com/EliMutchnik/devops-experts/re
 kubectl describe pod task-pv-pod
 
 # Checking the mount
-kubectl exec -it task-pv-pod -- bash
+kubectl exec -it task-pv-pod -- sh
 cd /usr/share/nginx/html/
 echo 1 > index.html
 exit
 kubectl get pv
 kubectl describe pv <ID>
-kubectl debug node/docker-desktop -it --image=busybox -- sh
+kubectl debug node/<NODE NAME> -it --image=busybox -- sh
 kubectl delete -f https://raw.githubusercontent.com/EliMutchnik/devops-experts/refs/heads/main/k8s/volumes/pod-with-pvc.yaml
 
 # Local dir
 kubectl apply -f https://raw.githubusercontent.com/EliMutchnik/devops-experts/refs/heads/main/k8s/volumes/pod-empty-dir.yaml
-kubectl exec -it test-pd -- bash
+kubectl exec -it test-pd -- sh
 
 # Config maps
 kubectl apply -f https://raw.githubusercontent.com/EliMutchnik/devops-experts/refs/heads/main/k8s/volumes/config-map.yaml
+kubectl get configmaps
+kubectl describe configmaps <NAME OF CONFIGMAP>
+
 kubectl apply -f https://raw.githubusercontent.com/EliMutchnik/devops-experts/refs/heads/main/k8s/volumes/game-config.yaml
+kubectl describe configmap game-config
+
 kubectl apply -f https://raw.githubusercontent.com/EliMutchnik/devops-experts/refs/heads/main/k8s/volumes/pod-with-config-map.yaml
-kubectl exec -it pod-env-var -- bash
+kubectl exec -it pod-env-var -- sh
+env
 cat /app/game.properties
 exit
-kubectl describe configmap game-config
 
 # Secrets
 kubectl apply -f https://raw.githubusercontent.com/EliMutchnik/devops-experts/refs/heads/main/k8s/volumes/secret.yaml
+kubectl describe secret <SECRET NAME>
 kubectl apply -f https://raw.githubusercontent.com/EliMutchnik/devops-experts/refs/heads/main/k8s/volumes/pod-with-secret.yaml
+kubectl exec -it secret-pod -- sh
 
 # StatefullSets
 kubectl apply -f https://raw.githubusercontent.com/EliMutchnik/devops-experts/refs/heads/main/k8s/volumes/statefulset.yaml
