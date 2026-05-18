@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: fluentd
+spec:
+  selector:
+    matchLabels:
+      name: fluentd
+  template:
+    metadata:
+      labels:
+        name: fluentd
+    spec:
+      containers:
+        - name: fluentd
+          image: fluent/fluentd:v1.14
+          resources:
+            limits:
+              memory: "200Mi"
+              cpu: "100m"
+            requests:
+              memory: "100Mi"
+              cpu: "50m"
