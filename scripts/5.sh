@@ -28,6 +28,7 @@ helm history myrelease
 
 # How helm manage revisions
 kubectl get secrets
+kubectl get secret <revision> -o yaml
 
 helm get manifest myrelease --revision 1
 helm get manifest myrelease --revision 2
