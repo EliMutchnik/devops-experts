@@ -16,7 +16,6 @@ git status
 # Start tracking the file
 git add README.md
 git status
-git restore --staged README.md
 git add README.md
 
 # First commit
