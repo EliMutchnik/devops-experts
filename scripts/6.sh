@@ -3,6 +3,7 @@ git config --global user.email "your_email@example.com"
 git config --list
 
 mkdir my-first-repo-0426
+cd my-first-repo-0426
 git init
 
 # Create first file
