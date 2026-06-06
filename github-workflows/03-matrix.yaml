@@ -1,0 +1,40 @@
+name: Matrix Build
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  matrix_build:
+    runs-on: ${{ matrix.os }}
+    env:
+      MYVAR: "Hello, World!"
+    strategy:
+      matrix:
+        python: [3.11, 3.12, 3.13]
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Show Environment and Platform
+        run: |
+          echo "Global Variable: ${{ env.MYVAR }}"
+          echo "Python Matrix Target: ${{ matrix.python }}"
+          echo "OS Matrix Target: ${{ matrix.os }}"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest requests httpx
+
+      - name: Run tests
+        run: |
+          python -c "import requests, httpx; print('Dependencies successfully verified in python!')"
+          pytest --version
