@@ -1,0 +1,38 @@
+name: Download and Upload Artifacts
+
+on:
+  workflow_dispatch:
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build a folder with files
+        run: |
+          mkdir -p data/nested
+          echo "I am file 1" > data/file1.txt
+          echo "I am file 2" > data/nested/file2.txt
+          echo "--- what we built ---"
+          find data
+
+      - name: Upload the folder
+        uses: actions/upload-artifact@v6
+        with:
+          name: my-artifact
+          path: data
+
+  download:
+    needs: upload
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download into a known folder
+        uses: actions/download-artifact@v6
+        with:
+          name: my-artifact
+          path: downloaded
+
+      - name: See what arrived
+        run: |
+          echo "--- what we got ---"
+          find downloaded
+          cat downloaded/nested/file2.txt

@@ -1,0 +1,25 @@
+name: Call Reusable Deploy Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        type: string
+        choices:
+          - staging
+          - production
+
+jobs:
+  staging:
+    uses: ./.github/workflows/reusable-deploy.yaml
+    with:
+      environment: staging
+  prod:
+    if: ${{ github.event.inputs.environment == 'production' }}
+    needs: staging
+    uses: ./.github/workflows/reusable-deploy.yaml
+    with:
+      environment: production
+    secrets: inherit
