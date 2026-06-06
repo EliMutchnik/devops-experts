@@ -1,0 +1,21 @@
+name: Show Repository
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  show_repo:
+    runs-on: ubuntu-latest
+    container: python:3.13
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: show files
+        run: |
+          ls -ltr
+          python --version
