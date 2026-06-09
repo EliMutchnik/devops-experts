@@ -1,7 +1,8 @@
 name: Build and Push Docker Image
-#############################################
-# Create DockerHub token before running this!
-#############################################
+###################################################################
+# 1. Create DockerHub token before running this!
+# 2. Make sure to pass the right context in "Build and push" step!
+###################################################################
 on:
   push:
     branches:
@@ -26,8 +27,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: ./github-workflows/build-and-push
-          file: ./github-workflows/build-and-push/Dockerfile
+          context: ./build-and-push
+          file: ./build-and-push/Dockerfile
           # If secrets are missing, push is set to false so the workflow still compiles successfully as a test run!
           push: ${{ secrets.DOCKERHUB_USERNAME != '' && secrets.DOCKERHUB_TOKEN != '' }}
           tags: |
