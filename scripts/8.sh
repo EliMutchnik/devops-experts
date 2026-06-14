@@ -1,26 +1,29 @@
+### Setup ###
+
 # Deploy ArgoCD
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 kubectl get all -n argocd
 
 # Login to ArgoCD
-
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" -n argocd | base64 -d; echo
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 # Login to localhost:8080
 
+
+### Ex1 ###
 # Create a new repo
-create new repo called: devops-1125-argocd
+create new repo called: devops-lesson8-argocd
 https://github.com/new
-# Add those files: 
+
+# Add those files under ex1 folder: 
 https://github.com/EliMutchnik/devops-experts/tree/main/argocd/deployment.yaml
 https://github.com/EliMutchnik/devops-experts/tree/main/argocd/svc.yaml
-
 # Create a new ArgoCD application
 # Change replicas and see the impact
 
-# Deploying Helm chart via ArgoCD
 
+# Deploying Helm chart via ArgoCD
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
