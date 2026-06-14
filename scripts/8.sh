@@ -23,7 +23,11 @@ https://github.com/EliMutchnik/devops-experts/tree/main/argocd/svc.yaml
 # Change replicas and see the impact
 
 
+### Ex2 ###
 # Deploying Helm chart via ArgoCD
+# Create and commit new helm chart (mychart) in the repo root
+
+# Create ArgoCD application
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -31,8 +35,8 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/avielb/advanced-devops.git
-    path: gitops/argocd/mychart
+    repoURL: https://github.com/<USERNAME>/devops-lesson8-argocd.git
+    path: mychart
     targetRevision: HEAD
     helm:
       valueFiles:
@@ -46,12 +50,12 @@ spec:
       selfHeal: true
 
 # Use multiple values
-https://github.com/avielb/advanced-devops/tree/master/gitops/argocd/mychart
-values-dev.yaml
-values-prod.yaml
+values-dev.yaml - replicaCount: 2
+values-prod.yaml - replicaCount: 4
 
 
-# Hooks and Waves demo
+### Hooks and Waves demo ###
+# Create ArgoCD application
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
