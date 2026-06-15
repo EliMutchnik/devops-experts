@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ex1-app
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io   # delete child -> cascade delete its workloads
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/EliMutchnik/devops-experts.git
+    path: argocd/ex1
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: app-of-apps
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
