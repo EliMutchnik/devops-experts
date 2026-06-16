@@ -17,8 +17,8 @@ Create new repo called: devops-lesson8-argocd
 https://github.com/new
 
 # Add those files under ex1 folder: 
-https://github.com/EliMutchnik/devops-experts/tree/main/argocd/deployment.yaml
-https://github.com/EliMutchnik/devops-experts/tree/main/argocd/svc.yaml
+https://github.com/EliMutchnik/devops-experts/tree/main/argocd/ex1/deployment.yaml
+https://github.com/EliMutchnik/devops-experts/tree/main/argocd/ex1/svc.yaml
 # Create a new ArgoCD application manually via UI - point it to 
 # Change replicas and see the impact
 
