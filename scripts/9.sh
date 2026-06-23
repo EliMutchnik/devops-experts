@@ -22,10 +22,17 @@ kubectl -n monitoring port-forward svc/prometheus-prometheus-node-exporter 9100:
 kubectl -n monitoring port-forward svc/prometheus-server 9090:80
 # Go to localhost:9090
 # PromQL examples:
-1. 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)
-2. (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100
-3. node_filesystem_avail_bytes / node_filesystem_size_bytes * 100
-4. sum by (device) (rate(node_network_receive_bytes_total[5m]) + rate(node_network_transmit_bytes_total[5m]))
+1. up == 1
+2. 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)
+3. (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 10
+4. node_filesystem_avail_bytes / node_filesystem_size_bytes * 100
+5. sum by (device) (rate(node_network_receive_bytes_total[5m]) + rate(node_network_transmit_bytes_total[5m]))
+6. count(node_uname_info)
+7. topk(5, kube_pod_container_status_restarts_total)
+8. bottomk(3, node_memory_MemAvailable_bytes)
+9. avg_over_time(node_load1[1h])   # average load over the last hour
+10. max_over_time(node_load1[6h])   # peak load seen in last 6h
+11. changes(sum(kube_pod_status_phase{namespace="monitoring", phase="Running", pod=~"prometheus-prometheus-pushgateway.*"})[10m:5s])
 
 ### Push Gateway
 kubectl -n monitoring port-forward svc/prometheus-prometheus-pushgateway 9091:9091
