@@ -153,6 +153,11 @@ data "aws_subnets" "all" {
   }
 }
 
+################################################
+#################### main.tf ###################
+################################################
+
+
 # Instance 1: Development (Ping Enabled)
 module "dev_server" {
   source        = "./modules/ec2_with_ping"
