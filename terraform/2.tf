@@ -1,3 +1,7 @@
+################################################
+################# providers.tf #################
+################################################
+
 terraform {
   required_version = ">= 1.10.0"
 
@@ -23,6 +27,10 @@ provider "aws" {
 
 
 
+################################################
+#################### data.tf ###################
+################################################
+
 data "aws_vpc" "default" {
   default = true
 }
@@ -40,12 +48,14 @@ data "aws_subnet" "primary" {
 
 
 
+################################################
+################ test-server.tf ################
+################################################
 
-# 1. COUNT: Used here as a condition (Only create if 'create_test_instance' is true)
 # 1. COUNT: Used here as a condition (Only create if 'create_test_instance' is true)
 resource "aws_instance" "test_server" {
   count         = var.create_test_instance ? 1 : 0
-  ami           = "ami-07ff62358b87c7116"
+  ami           = "ami-06067086cf86c58e6"
   instance_type = "t3.micro"
 
   subnet_id                   = data.aws_subnet.primary.id
@@ -93,11 +103,15 @@ resource "null_resource" "ping_test" {
 
 
 
+################################################
+############### count-server.tf ################
+################################################
+
 # 2. FOR_EACH: Create multiple instances based on a Map
 resource "aws_instance" "web_servers" {
   for_each      = var.server_config
 
-  ami           = "ami-07ff62358b87c7116"
+  ami           = "ami-06067086cf86c58e6"
   instance_type = each.value
   subnet_id     = data.aws_subnet.primary.id
 
@@ -109,19 +123,62 @@ resource "aws_instance" "web_servers" {
 # 3. NULL RESOURCE: Runs a local script or command
 # This doesn't create AWS infra, it just executes a task on your computer
 resource "null_resource" "post_deploy_msg" {
+  for_each = var.server_config
   triggers = {
-    # This ensures the script runs every time the VPC ID changes
-    vpc_id = data.aws_vpc.default.id
+    # This ensures the script runs every time the VPC ID / instance name changes, even if the instance itself doesn't change.
+    # To always run, you can also add a timestamp to the triggers map (always_run = timestamp())
+    instance_name = each.key
+    vpc_id        = data.aws_vpc.default.id
   }
 
   provisioner "local-exec" {
-    command = "echo Deployment complete in VPC ${data.aws_vpc.default.id}!"
+    command = "echo \"Deployment to ${self.triggers.instance_name} completed in VPC ${self.triggers.vpc_id}!\" >> /tmp/deployment.log"
   }
+
+  depends_on = [aws_instance.web_servers]
 }
 
 
 
+################################################
+################### locals.tf ##################
+################################################
 
+locals {
+  # [for k, v in map : expr] -> produces a LIST
+  server_summary = [for name, type in var.server_config : "${name}: ${type}"]
+
+  # { for k, v in map : k => v } -> produces a MAP (note the curly braces
+  # and the "=>" instead of a plain expression)
+  server_config_upper = { for name, type in var.server_config : upper(name) => type }
+}
+
+
+
+################################################
+################### outputs.tf ##################
+################################################
+
+output "server_summary" {
+  description = "Human-readable list built with a for expression over server_config"
+  value       = local.server_summary
+}
+
+output "server_config_upper" {
+  description = "Map of server names to instance types in uppercase"
+  value       = local.server_config_upper
+}
+
+output "web_server_private_ips" {
+  description = "Private IPs of every web server, collected with a for expression over a for_each-created resource"
+  value       = [for name, instance in aws_instance.web_servers : instance.private_ip]
+}
+
+
+
+################################################
+################# variables.tf #################
+################################################
 
 variable "create_test_instance" {
   description = "Set to true to create the test EC2"
