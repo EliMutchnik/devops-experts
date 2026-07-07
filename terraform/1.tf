@@ -1,3 +1,30 @@
+################################################
+################# providers.tf #################
+################################################
+
+terraform {
+  backend "local" {}
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "6.27.0"
+    }
+  }
+}
+
+provider "aws" {
+  region = "us-east-1"
+  access_key = "XXXXX"
+  secret_key = "XXXXX"
+}
+
+
+
+################################################
+#################### main.tf ###################
+################################################
+
 resource "random_string" "suffix" {
   length  = 8
   upper   = false
@@ -25,6 +52,12 @@ resource "aws_s3_bucket_versioning" "state_versioning" {
   }
 }
 
+
+
+################################################
+################## variables.tf ################
+################################################
+
 variable "project_name" {
   description = "Name of the project"
   type        = string
@@ -36,24 +69,13 @@ variable "my_name" {
   type        = string
 }
 
+
+
+################################################
+################### outputs.tf #################
+################################################
+
 output "s3_bucket_name" {
   description = "The name of the bucket"
   value       = aws_s3_bucket.terraform_states.bucket
-}
-
-terraform {
-  backend "local" {}
-
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "6.27.0"
-    }
-  }
-}
-
-provider "aws" {
-  region = "us-east-1"
-  access_key = "XXXXX"
-  secret_key = "XXXXX"
 }
