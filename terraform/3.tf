@@ -1,4 +1,6 @@
-###### ec2_with_ping module ######
+################################################
+######### modules/ec2_with_ping/main.tf ########
+################################################
 
 # 1. The Security Group
 resource "aws_security_group" "this" {
@@ -53,7 +55,10 @@ resource "null_resource" "ping_test" {
   depends_on = [aws_instance.this, aws_security_group_rule.allow_icmp]
 }
 
-###### Variables ######
+
+################################################
+###### modules/ec2_with_ping/variables.tf ######
+################################################
 
 variable "instance_name" {
   description = "Name tag for the EC2 instance"
@@ -87,7 +92,10 @@ variable "enable_ping" {
   default     = false
 }
 
-###### Outputs ######
+
+################################################
+####### modules/ec2_with_ping/outputs.tf #######
+################################################
 
 output "instance_id" {
   description = "The ID of the EC2 instance"
@@ -100,8 +108,11 @@ output "instance_public_ip" {
 }
 
 
-############# Usage Example #############
 
+
+################################################
+################# providers.tf #################
+################################################
 
 terraform {
   required_version = ">= 1.10.0"
@@ -126,7 +137,11 @@ provider "aws" {
   secret_key = "XXXXX"
 }
 
-# Data sources to get network info (same as previous steps)
+
+################################################
+#################### data.tf ###################
+################################################
+
 data "aws_vpc" "default" { 
   default = true 
 }
@@ -143,7 +158,7 @@ module "dev_server" {
   source        = "./modules/ec2_with_ping"
   instance_name = "Dev-Server"
   instance_type = "t3.micro"
-  ami_id        = "ami-07ff62358b87c7116"
+  ami_id        = "ami-06067086cf86c58e6"
   vpc_id        = data.aws_vpc.default.id
   subnet_id     = data.aws_subnets.all.ids[0]
   enable_ping   = true
@@ -154,7 +169,7 @@ module "prod_server" {
   source        = "./modules/ec2_with_ping"
   instance_name = "Prod-Server"
   instance_type = "t3.small"
-  ami_id        = "ami-07ff62358b87c7116"
+  ami_id        = "ami-06067086cf86c58e6"
   vpc_id        = data.aws_vpc.default.id
   subnet_id     = data.aws_subnets.all.ids[1]
   enable_ping   = false
