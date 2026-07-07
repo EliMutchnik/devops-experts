@@ -1,3 +1,7 @@
+################################################
+################# providers.tf #################
+################################################
+
 terraform {
   required_version = ">= 1.10.0"
 
@@ -24,6 +28,10 @@ provider "aws" {
 }
 
 
+################################################
+#################### vpc.tf ####################
+################################################
+
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 6.0"
@@ -47,3 +55,4 @@ module "vpc" {
 ### Class Ex
 # Create 2 S3 buckets in a loop that contains your name and a random suffix
 # Create an EC2 instance and a null resource that writes the public IP of the instance to a file
+# Upload this file to both buckets
