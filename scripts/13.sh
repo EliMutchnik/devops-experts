@@ -2,6 +2,16 @@
 
 ### Cloudtrail event history VS trails
 
+
+### Setup AWS cli
+https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+https://docs.aws.amazon.com/cli/latest/
+export AWS_ACCESS_KEY_ID=XXXXXXX
+export AWS_SECRET_ACCESS_KEY=XXXXXXXX
+
+# Run aws configure
+
+
 ### Secrets & Params
 # SSM Parameter Store
 
@@ -53,13 +63,6 @@ aws ssm put-parameter \
 
 aws ssm get-parameter --region us-east-1 --name "/dev/db/password"
 aws ssm get-parameter --region us-east-1 --name "/dev/db/password" --with-decryption
-
-
-### Setup AWS cli
-https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
-https://docs.aws.amazon.com/cli/latest/
-export AWS_ACCESS_KEY_ID=XXXXXXX
-export AWS_SECRET_ACCESS_KEY=XXXXXXXX
 
 
 ### RDS
