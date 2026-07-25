@@ -245,6 +245,50 @@ aws secretsmanager get-secret-value \
     --query SecretString --output text
 
 
+############ Delete secret ############
+
+aws secretsmanager delete-secret \
+    --region us-east-1 \
+    --secret-id "/dev/db/password" \
+    --recovery-window-in-days 7
+
+aws secretsmanager describe-secret \
+    --region us-east-1 \
+    --secret-id "/dev/db/password" \
+    --query '{Deleted:DeletedDate,Name:Name}'
+
+# reads now fail
+aws secretsmanager get-secret-value \
+    --region us-east-1 \
+    --secret-id "/dev/db/password" \
+    --query SecretString --output text
+# InvalidRequestException: ... marked for deletion
+
+# the failure every student hits — the name is still reserved
+aws secretsmanager create-secret \
+    --region us-east-1 \
+    --name "/dev/db/password" \
+    --secret-string 'x'
+# InvalidRequestException: You can't create this secret because a secret with
+# this name is already scheduled for deletion.
+
+# undo
+aws secretsmanager restore-secret \
+    --region us-east-1 \
+    --secret-id "/dev/db/password"
+
+aws secretsmanager get-secret-value \
+    --region us-east-1 \
+    --secret-id "/dev/db/password" \
+    --query SecretString --output text
+
+aws secretsmanager delete-secret \
+    --region us-east-1 \
+    --secret-id "/dev/db/password" \
+    --force-delete-without-recovery
+# name is free immediately; nothing to restore
+
+
 #####################################################
 ########################### RDS #####################
 #####################################################
