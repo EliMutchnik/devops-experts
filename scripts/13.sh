@@ -126,11 +126,12 @@ aws secretsmanager get-secret-value \
 
 
 ############ Rotate secret ############
+# Create "sm-func" Lambda function
 
+---
 import boto3
 
 sm = boto3.client("secretsmanager")
-
 
 def lambda_handler(event, context):
     arn = event["SecretId"]
@@ -157,7 +158,7 @@ def lambda_handler(event, context):
             MoveToVersionId=token,
             RemoveFromVersionId=current,
         )
-
+---
 
 aws lambda add-permission \
     --region us-east-1 \
