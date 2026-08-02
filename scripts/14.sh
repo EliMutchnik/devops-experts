@@ -1,19 +1,21 @@
 # Setup Ansible lab
-git clone https://github.com/avielb/ansible-demo
 cd ansible-demo
 docker compose up -d
 
 # Setup master and nodes
 docker exec -it ansible-demo-ansible-1 bash
-git clone https://github.com/avielb/ansible-demo
-cd ansible-demo
 ssh-keygen
 ssh-copy-id node1
 ssh-copy-id node2
 # p@ssw0rd is "screencast"
 
-mkdir /etc/ansible
-cp hosts /etc/ansible/hosts
+git clone https://github.com/EliMutchnik/devops-experts.git
+cd ansible-demo
+
+mkdir -p /etc/ansible
+cp config/hosts /etc/ansible/
+cp config/ansible.cfg /etc/ansible/
+
 
 #############
 # Ad-Hoc Commands
@@ -32,7 +34,7 @@ ansible-playbook vars.yml --tags=tag2
 ansible-playbook demo.yml
 
 ssh node1
-userdel avielb
+userdel elim
 
 # Roles and Tasks
 ansible-playbook common.yml
