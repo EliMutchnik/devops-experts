@@ -1,0 +1,9 @@
+version: "3.3"
+services:
+  ansible:
+    command: ["sleep", "100000"]
+    image: "elimutch/ansible-manager:latest"
+  node1:
+    image: "elimutch/ansible-node:latest"
+  node2:
+    image: "elimutch/ansible-node:latest"
