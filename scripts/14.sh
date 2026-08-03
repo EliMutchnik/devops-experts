@@ -1,30 +1,49 @@
-# Setup Ansible lab
+#######################################
+########## Setup Ansible lab ##########
+#######################################
+
 cd ansible-demo
 docker compose up -d
 
 # Setup master and nodes
-docker exec -it ansible-demo-ansible-1 bash
+docker exec -it docker-ansible-1 bash
 ssh-keygen
 ssh-copy-id node1
 ssh-copy-id node2
 # p@ssw0rd is "screencast"
 
 git clone https://github.com/EliMutchnik/devops-experts.git
-cd ansible-demo
+cd devops-experts/ansible-demo
 
 mkdir -p /etc/ansible
 cp config/hosts /etc/ansible/
 cp config/ansible.cfg /etc/ansible/
 
 
-#############
-# Ad-Hoc Commands
-ansible servers -m ping
-ansible servers -a "echo Hello World!"
-ansible servers -m apt -a "name=nginx state=present"
+######################################
+########## Ansible commands ##########
+######################################
 
-# Hosts Inventory
+# Hosts Inventory and config
 cat /etc/ansible/hosts
+cat /etc/ansible/ansible.cfg
+
+# Ad-Hoc Commands
+ansible servers -m setup
+ansible servers -m ping
+
+ansible servers -a "echo Hello World!"
+ansible servers -a "uptime"
+ansible servers -a "df -h"
+
+ansible servers -m apt -a "name=nginx state=present"
+# on both nodes: check if pkg installed
+ansible servers -m service -a "name=nginx state=started enabled=yes use=service"
+# on both nodes: "service nginx status"
+
+# Get files
+echo "I am node<N>" > /tmp/test.txt
+ansible servers -m fetch -a "src=/tmp/test.txt dest=/tmp/files/ flat=no"
 
 # Variables, Tags
 ansible-playbook vars.yml --tags=tag1
