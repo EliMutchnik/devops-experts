@@ -2,15 +2,15 @@
 - hosts: servers
 
   vars:
-  - var1: "Eli"
-  - var2: "Mutchnik"
-  - listVar:
-    - "Item4"
-    - "Item3"
-    - "Item2"
-    - "Item1"
+    var1: "Eli"
+    var2: "Mutchnik"
+    listVar:
+      - "Item4"
+      - "Item3"
+      - "Item2"
+      - "Item1"
   vars_files:
-      - ./vars_file.yml
+    - ./vars_file.yml
 
   tasks:
     - name: Print Vars from file.
