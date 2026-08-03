@@ -1,5 +1,26 @@
 ---
-- tasks: 
-  name: Runing task number 1 
-    debug: 
-      msg: "Wow such a cool task! Shigaon!"
+- hosts: servers
+  tasks:
+    - name: Ensure nginx is installed
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+    
+    - name: Ensure nginx is started
+      service:
+        name: nginx
+        state: started
+        use: service
+    
+    - name: Ensure custom index page is in place
+      copy:
+        src: files/index.html
+        dest: /var/www/html/index.html
+        mode: '0644'
+    
+    - name: Ensure app directory exists
+      file:
+        path: /opt/myapp
+        state: directory
+        mode: '0755'
