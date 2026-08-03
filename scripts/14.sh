@@ -45,15 +45,20 @@ ansible servers -m service -a "name=nginx state=started enabled=yes use=service"
 echo "I am node<N>" > /tmp/test.txt
 ansible servers -m fetch -a "src=/tmp/test.txt dest=/tmp/files/ flat=no"
 
+# Run first playbook
+ansible-playbook playbook.yml
+curl node1
+
 # Variables, Tags
 ansible-playbook vars.yml --tags=tag1
 ansible-playbook vars.yml --tags=tag2
 
 # Handlers, Variable register, If statement, Module, Tasks
 ansible-playbook demo.yml
-
 ssh node1
 userdel elim
+ansible-playbook demo.yml
+# Show if statement in action
 
 # Roles and Tasks
 ansible-playbook common.yml
@@ -70,13 +75,13 @@ ansible-galaxy install geerlingguy.java
 ansible-playbook -i hosts -u root galaxy-role.yml
 
 # Secrets
-ansible-vault create secrets.yml
-
+ansible-vault create secrets.yml # Setup your pass
+# insert:
 db_password: SecretPass123
-
 ansible-vault decrypt secrets.yml
+ansible-vault encrypt secrets.yml
 
-# secret-play.yml
+# Create secret-playbook.yml:
 ---
 - name: Use encrypted secrets
   hosts: localhost
@@ -88,16 +93,17 @@ ansible-vault decrypt secrets.yml
       debug:
         msg: "The database password is {{ db_password }}"
 
-ansible-playbook secret-play.yml --ask-vault-pass
+ansible-playbook secret-playbook.yml --ask-vault-pass
 
 ###########
 
 # group_vars/servers.yml
 ---
-app_path: "/var/www/html"
+app_path: "/tmp/bla"
 
-# playbooks/site.yml
 
+# dir.yml
+---
 - name: Configure webservers
   hosts: servers
   tasks:
@@ -106,6 +112,10 @@ app_path: "/var/www/html"
         path: "{{ app_path }}"
         state: directory
         mode: '0755'
+
+ansible-playbook dir.yml
+mv group_vars/servers.yml group_vars/servers1.yml
+ansible-playbook dir.yml
 
 ###########
 
