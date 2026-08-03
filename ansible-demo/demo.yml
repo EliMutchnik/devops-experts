@@ -2,9 +2,9 @@
 - hosts: servers
   handlers:
 
-  - name: Handler_No1
+  - name: user_handler
     debug:
-      msg: "Message from Handler Number 1"
+      msg: "User was modified!"
 
   tasks:
   - name: Add User elim
@@ -12,7 +12,7 @@
       name: elim
       comment: "Eli Mutchnik"
       shell: /bin/bash
-    notify: Handler_No1
+    notify: user_handler
 
   - name: Register statement
     shell: ls -l 
