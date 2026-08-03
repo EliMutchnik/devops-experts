@@ -2,5 +2,13 @@
 - name: install nginx and vim
   apt: name=nginx,vim state=present
 
-- name: Copy aviel.txt 
-  copy: src=aviel.txt dest=/var/tmp
+- name: Copy file.txt
+  copy: src=file.txt dest=/var/tmp
+
+- name: Print the content of file.txt
+  command: cat /var/tmp/file.txt
+  register: result
+
+- name: Show the content of file.txt
+  debug:
+    msg: "{{ result.stdout }}"
