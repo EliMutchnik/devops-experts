@@ -1,0 +1,46 @@
+---
+- hosts: servers
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Ensure nginx is installed
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Deploy templated index page
+      template:
+        src: templates/index.html.j2
+        dest: /var/www/html/index.html
+        mode: '0644'
+
+    - name: Ensure nginx is started
+      service:
+        name: nginx
+        state: started
+        use: service
+
+    - name: Wait for nginx to accept connections
+      wait_for:
+        port: 80
+        host: 127.0.0.1
+        timeout: 15
+
+    - name: Fetch the page nginx is actually serving
+      uri:
+        url: "http://localhost/"
+        return_content: yes
+      register: page_result
+
+    - name: Show the fetched content
+      debug:
+        var: page_result.content
+
+    - name: Confirm the deployment actually worked
+      assert:
+        that:
+          - "'Deployed via Ansible template module' in page_result.content"
+        fail_msg: "Deployed page did not contain expected content!"
+        success_msg: "Deployment verified — content matches."

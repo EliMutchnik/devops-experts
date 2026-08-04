@@ -1,0 +1,4 @@
+---
+app_name: "Ansible Demo"
+app_owner: "Eli"
+welcome_message: "Deployed via Ansible template module"
