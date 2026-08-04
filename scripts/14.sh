@@ -2,7 +2,7 @@
 ########## Setup Ansible lab ##########
 #######################################
 
-cd ansible-demo
+cd ansible-demo/docker
 docker compose up -d
 
 # Setup master and nodes
