@@ -123,15 +123,18 @@ ansible-playbook dir.yml
 https://docs.ansible.com/projects/ansible/latest/collections/index_module.html#ansible-builtin
 
 echo "MY_ENV_VAR=foo" > /tmp/envs1
+---
+- name: Configure webservers
+  hosts: servers
+  tasks:
+    - name: Set MY_ENV_VAR
+      lineinfile:
+        path: /tmp/envs1
+        regexp: '^MY_ENV_VAR='
+        line: MY_ENV_VAR=eli123
 
-- name: Set MY_ENV_VAR
-  lineinfile:
-    path: /tmp/envs1
-    regexp: '^MY_ENV_VAR='
-    line: MY_ENV_VAR=eli123
-
-- name: Create envs2
-  lineinfile:
-    path: /tmp/envs2
-    line: PING=pong
-    create: yes
+    - name: Create envs2
+      lineinfile:
+        path: /tmp/envs2
+        line: PING=pong
+        create: yes
