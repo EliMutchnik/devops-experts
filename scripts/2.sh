@@ -37,6 +37,18 @@ CMD ["python", "/app/1.py"]
 docker build -t myimage1 .
 docker run --name myapp1 -p 5001:5000 myimage1
 
+-------
+# The right way:
+
+FROM python:alpine
+RUN pip install flask
+WORKDIR /app
+COPY 1.py /app/1.py
+CMD ["python", "/app/1.py"]
+
+export NAME="Eli"
+docker run -e NAME --name myapp2 -p 5002:5000 myimage1
+
 =======
 
 docker network create example
