@@ -51,6 +51,7 @@ docker run -e NAME --name myapp2 -p 5002:5000 myimage1
 
 =======
 
+docker network ls
 docker network create example
 docker run -d  --name container1 --network example nginx:alpine
 docker run -d  --name container2 --network example nginx:alpine
@@ -58,6 +59,19 @@ docker run -d  --name container2 --network example nginx:alpine
 docker network inspect example
 docker exec -it container1 sh
 curl http://container2
+
+=======
+
+# Named volume: data outlives the container
+
+docker volume ls
+docker run --rm -v mydata:/data alpine:latest sh -c 'echo hello > /data/f.txt'
+docker run --rm -v mydata:/data alpine:latest cat /data/f.txt   # prints: hello
+docker volume rm mydata
+
+# Bind mount: host dir <-> container, edits are live both ways
+mkdir demo && echo 'from host' > demo/f.txt
+docker run --rm --mount type=bind,src="$PWD/demo",dst=/data alpine:latest cat /data/f.txt
 
 =======
 
@@ -85,7 +99,9 @@ services:
 
 docker compose up -d
 
-docker tag myimage1 elimutch/devops1125:v0.1
+==========
+
+docker tag myimage1 elimutch/devops_course:v0.1
 docker push elimutch/devops1125:v0.1
 
 ==========
