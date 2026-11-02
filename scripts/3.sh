@@ -38,7 +38,8 @@ curl http://<ip2>:80
 kubectl delete service hello-node
 
 kubectl expose deploy/hello-node --type NodePort --port 80
-curl http://<node_ip>:<node_port>
+kubectl describe service hello-node
+curl http://<node_ip>:<node_port> # wont work
 kubectl port-forward svc/hello-node 4444:80
 http://localhost:4444
 
