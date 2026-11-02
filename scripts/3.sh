@@ -32,9 +32,11 @@ kubectl get deployment hello-node -o yaml
 kubectl expose deploy/hello-node --type ClusterIP --port 80
 kubectl describe service hello-node
 kubectl scale deployment hello-node --replicas=2
-kubectl exec -it <pod_name> -- bash
-curl http://<ip>:80
+kubectl exec -it <pod_name1> -- bash
+kubectl get pods -o wide
+curl http://<ip2>:80
 kubectl delete service hello-node
+
 kubectl expose deploy/hello-node --type NodePort --port 80
 curl http://<node_ip>:<node_port>
 kubectl port-forward svc/hello-node 4444:80
