@@ -24,7 +24,7 @@ kubectl get deployment hello-node -o yaml
 
 # Modifing first deployment
 kubectl scale deployment hello-node --replicas=20
-kubectl set image deploy/hello-node nginx=nginx:latest
+kubectl set image deploy/hello-node nginx=nginx:1.29-alpine
 kubectl describe deployment hello-node
 kubectl get deployment hello-node -o yaml
 
