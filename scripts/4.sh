@@ -1,6 +1,10 @@
 kubectl get pods
 
 # Creating a Persistent Volume
+kubectl apply -f https://raw.githubusercontent.com/EliMutchnik/devops-experts/refs/heads/main/k8s/volumes/storageclass.yaml
+kubectl describe storageclass manual
+
+# Creating a Persistent Volume
 kubectl apply -f https://raw.githubusercontent.com/EliMutchnik/devops-experts/refs/heads/main/k8s/volumes/pv.yaml
 kubectl describe pv
 
