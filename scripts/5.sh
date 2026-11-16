@@ -39,7 +39,7 @@ helm upgrade -i myrelease ./ --rollback-on-failure    # --rollback-on-failure on
 # Diffing changes before you apply them (helm-diff plugin)
 helm plugin install https://github.com/databus23/helm-diff --verify=false
 helm plugin list
-helm diff upgrade myrelease ./
+helm diff revision myrelease x y
 
 
 # Pass external values
