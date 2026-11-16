@@ -34,10 +34,10 @@ helm get manifest myrelease --revision 1
 helm get manifest myrelease --revision 2
 helm get all myrelease              # manifest + values + hooks + notes, everything
 helm rollback myrelease
-helm upgrade -i myrelease ./ --atomic    # --atomic on upgrade auto-rolls-back on failure
+helm upgrade -i myrelease ./ --rollback-on-failure    # --rollback-on-failure on upgrade auto-rolls-back on failure
 
 # Diffing changes before you apply them (helm-diff plugin)
-helm plugin install https://github.com/databus23/helm-diff
+helm plugin install https://github.com/databus23/helm-diff --verify=false
 helm plugin list
 helm diff upgrade myrelease ./
 
